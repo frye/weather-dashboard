@@ -172,16 +172,21 @@ var cityButtonClick = function () {
 
 }
 
+// Click handler for the Unordered List.
 var cityUlClick = function (event) {
+    //We are only interested in button clicks.
     if (event.target.tagName === 'BUTTON') {
+        //Since we have two buttons in one li we need to traverse through parent to delete the correct city when the delete button is clicked.
         if (event.target.classList.contains('delete')) {
             var city = event.target.parentNode.children[0].textContent;
             if (cityArray.includes(city)) {
                 var index = cityArray.indexOf(city);
+                // Using splice to delete the city from the array, then updating local storage and redrawing navigation
                 cityArray.splice(index, 1);
                 localStorage.setItem('cityArray', JSON.stringify(cityArray));
                 updateSideNav();
             }
+            // If we did not delete but hit a button then handle the api calls and page updates.
         } else {
             currentCity = event.target.textContent;
             localStorage.setItem('currentCity', currentCity);
