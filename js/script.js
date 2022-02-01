@@ -105,7 +105,7 @@ var createCard = function (data) {
     cardHdr.classList.add('card-title');
 
     // Set the data, both icon filename and timezone offset are picked from the response.
-    cardImg.setAttribute('src', `http://openweathermap.org/img/w/${data.weather[0].icon}.png`);
+    cardImg.setAttribute('src', `https://openweathermap.org/img/w/${data.weather[0].icon}.png`);
     // Calculate the correct time based off of the timezone offset and returned UTC time. 
     // First do the unix time math, then multiply by 1000 to get milliseconds for new Date()
     cardHdr.textContent = new Date((data.dt + timeZoneOffset) * 1000).toLocaleDateString();
@@ -145,7 +145,7 @@ var updateWeatherDisplay = function (data) {
 
 var getWeatherData = function (city_name) {
     // Use the openweather API to query for lat / lon based on city name.
-    fetch('http://api.openweathermap.org/geo/1.0/direct?q=' + city_name + '&limit=1&appid=' + apiKey)
+    fetch('https://api.openweathermap.org/geo/1.0/direct?q=' + city_name + '&limit=1&appid=' + apiKey)
         .then((response) => {
             return response.json();
         }).then((data) => {
