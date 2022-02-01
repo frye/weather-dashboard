@@ -167,6 +167,7 @@ var cityButtonClick = function () {
     cityArray.push(currentCity);
     localStorage.setItem('cityArray', JSON.stringify(cityArray));
     updateSideNav();
+    cityInput.value = '';
     getWeatherData(currentCity);
 
 }
