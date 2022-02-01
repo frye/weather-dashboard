@@ -1,4 +1,5 @@
 const apiKey = 'c3f4a8d9e2dcb57f37a039d7f70a0c1a';
+const NUM_FORECASTS = 5;
 
 var cityInput = document.querySelector('#cityInput');
 var cityButton = document.querySelector('#cityButton');
@@ -79,17 +80,27 @@ var createCard = function (data) {
 
     // Set the data
     cardImg.setAttribute('src', `http://openweathermap.org/img/w/${data.weather[0].icon}.png`);
+    cardHdr.textContent = new Date(data.dt * 1000).toLocaleDateString();
+    cardTemp.textContent = `Temp: ${data.temp.max}°F`;
+    cardWind.textContent = `Wind: ${data.wind_speed}MPH`;
+    cardHumi.textContent = `Humidity: ${data.humidity}%`;
 
 
     // Add elements to card div and return the card.
     cardDiv.appendChild(cardImg);
+    cardBody.appendChild(cardHdr);
+    cardBody.appendChild(cardTemp);
+    cardBody.appendChild(cardWind);
+    cardBody.appendChild(cardHumi);
+
+    cardDiv.appendChild(cardBody);
 
     return cardDiv;
 }
 
 var drawForecast = function (data) {
     forecastWeather.innerHTML = ''
-    for (var i = 0; i < data.length; i++) {
+    for (var i = 1; i <= NUM_FORECASTS; i++) {
         console.log(data[i]);
         var card = createCard(data[i]);
         forecastWeather.appendChild(card);
