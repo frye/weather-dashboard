@@ -4,8 +4,36 @@ var cityInput = document.querySelector('#cityInput');
 var cityButton = document.querySelector('#cityButton');
 var sideNav = document.querySelector('#sideNav');
 
+// Read the stored previous searches from the localStorage
+var cityArray = JSON.parse(localStorage.getItem('cityArray')) || [];
+
+// Function to populate list of previously searched forecasts
+var updateSideNav = function() {
+    cityArray.sort();
+    sideNav.innerHTML = '';
+    for (var i=0; i < cityArray.length; i++) {
+        var element = document.createElement('li');
+        var button = document.createElement('button');
+        button.textContent = cityArray[i];
+        element.appendChild(button);
+        sideNav.appendChild(element);
+    }
+}
+
+// Create the buttons for fast navigation back to previously searched data.
+if (cityArray) {
+    console.log(cityArray);
+    updateSideNav();
+}
+
+
+
+
 var cityButtonClick = function() {
     console.log(cityInput.value);
+    cityArray.push(cityInput.value);
+    localStorage.setItem('cityArray', JSON.stringify(cityArray));
+    updateSideNav();
 }
 
 cityButton.addEventListener('click', cityButtonClick);
