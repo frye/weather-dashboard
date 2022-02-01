@@ -1,0 +1,15 @@
+* {
+    box-sizing: border-box;
+}
+
+header {
+    border: 1px solid black;
+}
+
+#weather-area {
+    border: 1px solid blue;
+}
+
+#search-bar {
+    border: 1px solid green;
+}
