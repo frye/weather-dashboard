@@ -157,19 +157,27 @@ var getWeatherData = function (city_name) {
                 }).then((data) => {
                     updateWeatherDisplay(data);
                 })
-        })
+        }).catch((err) => {
+            console.error('outer', err.message);
+        });
 }
 
 
 var cityButtonClick = function () {
     currentCity = cityInput.value;
-    localStorage.setItem('currentCity', currentCity);
-    cityArray.push(currentCity);
-    localStorage.setItem('cityArray', JSON.stringify(cityArray));
-    updateSideNav();
-    cityInput.value = '';
-    getWeatherData(currentCity);
-
+    if (currentCity) {
+        if (cityArray.includes(currentCity)) {
+            getWeatherData(currentCity);
+            return;
+        }
+        localStorage.setItem('currentCity', currentCity);
+        cityArray.push(currentCity);
+        localStorage.setItem('cityArray', JSON.stringify(cityArray));
+        updateSideNav();
+        cityInput.value = '';
+        getWeatherData(currentCity);
+    }
+    
 }
 
 // Click handler for the Unordered List.
