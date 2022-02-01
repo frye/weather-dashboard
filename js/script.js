@@ -69,12 +69,15 @@ var drawCurrent = function (data) {
     var wind = document.createElement('p');
     var humidity = document.createElement('p');
     var uvindex = document.createElement('p');
+    var icon = document.createElement('img');
+    icon.setAttribute('src',`https://openweathermap.org/img/w/${data.weather[0].icon}.png`);
 
     // Calculate UV Index color
     var color = getUvIndexColor(data.uvi);
 
     // Add the data 
     cardTitle.textContent = `${currentCity} ${new Date((data.dt + timeZoneOffset) * 1000).toLocaleDateString()}`;
+    cardTitle.append(icon);
     temp.textContent = `Temp: ${Math.ceil(data.temp)}°F`;
     wind.textContent = `Wind: ${data.wind_speed}MPH`;
     humidity.textContent = `Humidity: ${data.humidity}%`;
