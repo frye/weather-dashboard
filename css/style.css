@@ -1,3 +1,13 @@
+body {
+    background-image: url('../images/background.jpg');
+    background-size: cover;
+    background-repeat: none;
+}
+
+main {
+    opacity: 0.9;
+}
+
 .green {
     background-color: green;
     color: white;
