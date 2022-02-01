@@ -14,6 +14,7 @@ var currentCoords = {
     lon: 0
 };
 var currentCity = '';
+var timeZoneOffset = 0;
 
 // Function to populate list of previously searched forecasts
 var updateSideNav = function () {
@@ -22,9 +23,16 @@ var updateSideNav = function () {
     sideNav.innerHTML = '';
     for (var i = 0; i < cityArray.length; i++) {
         var element = document.createElement('li');
+        element.classList.add('d-flex', 'pb-1');
         var button = document.createElement('button');
+        var deleteBtn = document.createElement('button');
+        deleteBtn.classList.add('btn', 'btn-danger', 'w-25', 'delete');
+        deleteBtn.innerHTML = 'X';
         button.textContent = cityArray[i];
+        button.classList.add('btn', 'btn-primary', 'w-75');
         element.appendChild(button);
+        element.appendChild(deleteBtn);
+        sideNav.classList.add('custom-list');
         sideNav.appendChild(element);
     }
 }
@@ -36,7 +44,13 @@ if (cityArray) {
 }
 
 var getUvIndexColor = function (uvi) {
-    return 'green';
+    if ( uvi < 3 ) {
+        return 'green';
+    } else if ( uvi < 6 ) {
+        return 'yellow';
+    } else {
+        return 'red';
+    }
 }
 
 var drawCurrent = function (data) {
@@ -54,7 +68,7 @@ var drawCurrent = function (data) {
     var color = getUvIndexColor(data.uvi);
 
     // Add the data 
-    cardTitle.textContent = currentCity;
+    cardTitle.textContent = `${currentCity} ${new Date((data.dt + timeZoneOffset) * 1000).toLocaleDateString()}`;
     temp.textContent = `Temp: ${Math.ceil(data.temp)}°F`;
     wind.textContent = `Wind: ${data.wind_speed}MPH`;
     humidity.textContent = `Humidity: ${data.humidity}%`;
@@ -78,10 +92,18 @@ var createCard = function (data) {
     var cardWind = document.createElement('p');
     var cardHumi = document.createElement('p');
 
-    // Set the data
+    //style
+    cardDiv.classList.add('card', 'col-8', 'col-sm-4', 'col-lg-3', 'custom-card');
+    cardImg.classList.add('card-img-top', 'weather-icon');
+    cardBody.classList.add('card-body');
+    cardHdr.classList.add('card-title');
+
+    // Set the data, both icon filename and timezone offset are picked from the response.
     cardImg.setAttribute('src', `http://openweathermap.org/img/w/${data.weather[0].icon}.png`);
-    cardHdr.textContent = new Date(data.dt * 1000).toLocaleDateString();
-    cardTemp.textContent = `Temp: ${data.temp.max}°F`;
+    // Calculate the correct time based off of the timezone offset and returned UTC time. 
+    // First do the unix time math, then multiply by 1000 to get milliseconds for new Date()
+    cardHdr.textContent = new Date((data.dt + timeZoneOffset) * 1000).toLocaleDateString();
+    cardTemp.textContent = `Temp: ${Math.ceil(data.temp.max)}°F`;
     cardWind.textContent = `Wind: ${data.wind_speed}MPH`;
     cardHumi.textContent = `Humidity: ${data.humidity}%`;
 
@@ -109,6 +131,8 @@ var drawForecast = function (data) {
 }
 
 var updateWeatherDisplay = function (data) {
+    timeZoneOffset = data.timezone_offset;
+    console.log(timeZoneOffset);
     drawCurrent(data.current);
     drawForecast(data.daily);
 }
@@ -144,11 +168,28 @@ var cityButtonClick = function () {
 
 var cityUlClick = function (event) {
     if (event.target.tagName === 'BUTTON') {
-        currentCity = event.target.textContent;
-        console.log(currentCity);
-        getWeatherData(currentCity);
+        if (event.target.classList.contains('delete')) {
+            var city = event.target.parentNode.children[0].textContent;
+            if (cityArray.includes(city)) {
+                var index = cityArray.indexOf(city);
+                cityArray.splice(index, 1);
+                localStorage.setItem('cityArray', JSON.stringify(cityArray));
+                updateSideNav();
+            }
+        } else {
+            currentCity = event.target.textContent;
+            console.log(currentCity);
+            getWeatherData(currentCity);
+        }
+    }
+}
+
+var handleEnter = function(event) {
+    if (event.keyCode === 13) {
+        cityButtonClick();
     }
 }
 
 cityButton.addEventListener('click', cityButtonClick);
 sideNav.addEventListener('click', cityUlClick);
+cityInput.addEventListener('keyup', handleEnter);

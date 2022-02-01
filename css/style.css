@@ -1,22 +1,39 @@
-* {
-    box-sizing: border-box;
-}
-
-header {
-    border: 1px solid black;
-}
-
-#weather-area {
-    border: 1px solid blue;
-}
-
-#search-bar {
-    border: 1px solid green;
-}
-
 .green {
     background-color: green;
     color: white;
     border-radius: 5px;
     padding: 5px;
+}
+
+.yellow {
+    background-color: yellow;
+    color: black;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.red {
+    background-color: red;
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0px;
+}
+
+.weather-icon {
+    width: 75px;
+    padding-top: 20px;
+    padding-left: 20px;
+}
+
+.custom-card {
+    max-width: 225px;
+}
+
+.custom-list {
+    list-style-type: none;
 }
