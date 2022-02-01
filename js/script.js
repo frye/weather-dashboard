@@ -9,6 +9,7 @@ var cityArray = JSON.parse(localStorage.getItem('cityArray')) || [];
 
 // Function to populate list of previously searched forecasts
 var updateSideNav = function() {
+    // Sorting the history alphabetically for easier reading.
     cityArray.sort();
     sideNav.innerHTML = '';
     for (var i=0; i < cityArray.length; i++) {
@@ -36,4 +37,11 @@ var cityButtonClick = function() {
     updateSideNav();
 }
 
+var cityUlClick = function(event) {
+    if (event.target.tagName === 'BUTTON') {
+        console.log(event.target.textContent);
+    }
+}
+
 cityButton.addEventListener('click', cityButtonClick);
+sideNav.addEventListener('click', cityUlClick);
