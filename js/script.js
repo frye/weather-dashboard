@@ -9,12 +9,18 @@ var forecastWeather = document.querySelector('#forecastWeather');
 
 // Read the stored previous searches from the localStorage
 var cityArray = JSON.parse(localStorage.getItem('cityArray')) || [];
+var currentCity = localStorage.getItem('currentCity') || 'Seattle';
 var currentCoords = {
     lat: 0,
     lon: 0
 };
-var currentCity = '';
 var timeZoneOffset = 0;
+
+var init = function() {
+    if (currentCity) {
+        getWeatherData(currentCity);
+    }
+}
 
 // Function to populate list of previously searched forecasts
 var updateSideNav = function () {
@@ -93,7 +99,7 @@ var createCard = function (data) {
     var cardHumi = document.createElement('p');
 
     //style
-    cardDiv.classList.add('card', 'col-8', 'col-sm-4', 'col-lg-3', 'custom-card');
+    cardDiv.classList.add('card', 'col-12', 'col-sm-4', 'col-lg-3', 'custom-card', 'bg-light', 'm-1', 'border-3');
     cardImg.classList.add('card-img-top', 'weather-icon');
     cardBody.classList.add('card-body');
     cardHdr.classList.add('card-title');
@@ -158,6 +164,7 @@ var getWeatherData = function (city_name) {
 
 var cityButtonClick = function () {
     currentCity = cityInput.value;
+    localStorage.setItem('currentCity', currentCity);
     console.log(currentCity);
     cityArray.push(currentCity);
     localStorage.setItem('cityArray', JSON.stringify(cityArray));
@@ -178,12 +185,14 @@ var cityUlClick = function (event) {
             }
         } else {
             currentCity = event.target.textContent;
+            localStorage.setItem('currentCity', currentCity);
             console.log(currentCity);
             getWeatherData(currentCity);
         }
     }
 }
 
+// Handle enter key press the same way as clicking the get forecast button.
 var handleEnter = function(event) {
     if (event.keyCode === 13) {
         cityButtonClick();
@@ -193,3 +202,5 @@ var handleEnter = function(event) {
 cityButton.addEventListener('click', cityButtonClick);
 sideNav.addEventListener('click', cityUlClick);
 cityInput.addEventListener('keyup', handleEnter);
+
+init();
