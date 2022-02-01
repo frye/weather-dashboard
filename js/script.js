@@ -45,7 +45,6 @@ var updateSideNav = function () {
 
 // Create the buttons for fast navigation back to previously searched data.
 if (cityArray) {
-    console.log(cityArray);
     updateSideNav();
 }
 
@@ -129,10 +128,10 @@ var createCard = function (data) {
     return cardDiv;
 }
 
+// Dynamically generates the cards for the 5 day forecasts using createCard function
 var drawForecast = function (data) {
     forecastWeather.innerHTML = ''
     for (var i = 1; i <= NUM_FORECASTS; i++) {
-        console.log(data[i]);
         var card = createCard(data[i]);
         forecastWeather.appendChild(card);
     }
@@ -141,7 +140,6 @@ var drawForecast = function (data) {
 
 var updateWeatherDisplay = function (data) {
     timeZoneOffset = data.timezone_offset;
-    console.log(timeZoneOffset);
     drawCurrent(data.current);
     drawForecast(data.daily);
 }
@@ -152,13 +150,11 @@ var getWeatherData = function (city_name) {
         .then((response) => {
             return response.json();
         }).then((data) => {
-            console.log(data[0]);
             //Get the current weather
             fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + data[0].lat + '&lon=' + data[0].lon + '&units=imperial&appid=' + apiKey)
                 .then((response) => {
                     return response.json();
                 }).then((data) => {
-                    console.log(data);
                     updateWeatherDisplay(data);
                 })
         })
@@ -168,7 +164,6 @@ var getWeatherData = function (city_name) {
 var cityButtonClick = function () {
     currentCity = cityInput.value;
     localStorage.setItem('currentCity', currentCity);
-    console.log(currentCity);
     cityArray.push(currentCity);
     localStorage.setItem('cityArray', JSON.stringify(cityArray));
     updateSideNav();
@@ -189,7 +184,6 @@ var cityUlClick = function (event) {
         } else {
             currentCity = event.target.textContent;
             localStorage.setItem('currentCity', currentCity);
-            console.log(currentCity);
             getWeatherData(currentCity);
         }
     }
