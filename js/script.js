@@ -34,7 +34,7 @@ if (cityArray) {
     updateSideNav();
 }
 
-var getUvIndexColor = function(uvi) {
+var getUvIndexColor = function (uvi) {
     return 'green';
 }
 
@@ -67,29 +67,34 @@ var drawCurrent = function (data) {
     currentWeather.appendChild(uvindex);
 }
 
-var createCard = function(data) {
+var createCard = function (data) {
     // Create card elements
     var cardDiv = document.createElement('div');
     var cardImg = document.createElement('img');
-    var cardBody= document.createElement('div');
+    var cardBody = document.createElement('div');
     var cardHdr = document.createElement('h3');
-    var cardTemp= document.createElement('p');
-    var cardWind= document.createElement('p');
-    var cardHumi= document.createElement('p');
+    var cardTemp = document.createElement('p');
+    var cardWind = document.createElement('p');
+    var cardHumi = document.createElement('p');
 
     // Set the data
-    // cardImg.setAttribute('src', `http://openweathermap.org/img/w/${data[i].weather[0].icon}.png`)
-    
+    cardImg.setAttribute('src', `http://openweathermap.org/img/w/${data.weather[0].icon}.png`);
+
+
+    // Add elements to card div and return the card.
+    cardDiv.appendChild(cardImg);
+
     return cardDiv;
 }
 
 var drawForecast = function (data) {
-    for (var i=0; i < data.length; i++) {
+    forecastWeather.innerHTML = ''
+    for (var i = 0; i < data.length; i++) {
         console.log(data[i]);
         var card = createCard(data[i]);
         forecastWeather.appendChild(card);
     }
-    
+
 }
 
 var updateWeatherDisplay = function (data) {
