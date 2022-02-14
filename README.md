@@ -9,6 +9,11 @@ Following GIF shows a high level oveview of the features.
 
 ![Weather dashboard screenshot](./images/Weather.gif)
 
+## Technologies
+- HTML
+- CSS
+- Javascript
+- Bootstrap
 
 ## Links
 The GitHub pages hosted version of the weather dashboard is [here](https://frye.github.io/weather-dashboard/).
